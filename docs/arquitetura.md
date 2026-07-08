@@ -39,6 +39,19 @@ Esquema estrela:
 - **Dimensões conformadas:** `dim_customer`, `dim_seller`, `dim_product`, `dim_date`.
 - `order_payments` agregado por pedido e anexado ao `fact_orders` (coluna sensível → OLS no Dia 3).
 
+## Decisão 5 — Delta CDF (Change Data Feed)
+
+O Fabric sugere habilitar a propriedade **Delta CDF** nas tabelas de origem para refresh incremental/eficiente do modelo semântico (relevante para Direct Lake, Dia 3).
+
+- **Bronze:** não habilitar (é reescrita full a cada ingestão).
+- **Gold:** avaliar habilitar em `fact_orders` / `fact_order_items` se o refresh Direct Lake se beneficiar de *framing* incremental.
+- Como habilitar: `ALTER TABLE gold_fact_orders SET TBLPROPERTIES (delta.enableChangeDataFeed = true)`.
+- **Decisão atual:** manter desligado no trial (volume pequeno, reescrita full é barata); registrar como ponto de tuning para produção.
+
+## Lakehouse schema-enabled (dbo)
+
+O Lakehouse `lh_olist` foi criado no modo **com esquema** — as tabelas ficam sob `dbo` (ex.: `dbo.brz_orders`). Os notebooks usam uma função `tbl()` com `SCHEMA = "dbo"` para qualificar os nomes; em Lakehouse legado (sem esquema), basta `SCHEMA = ""`.
+
 ## Convenções de nomenclatura
 
 - Lakehouse: `lh_olist`
