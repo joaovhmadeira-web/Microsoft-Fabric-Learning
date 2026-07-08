@@ -43,7 +43,7 @@ fabric-migration-olist/
 ## Progresso
 
 - [x] Esqueleto do repositório
-- [ ] **Dia 1** — Baseline PBI legado + Lakehouse Bronze
+- [x] **Dia 1** — Baseline PBI legado + Lakehouse Bronze
 - [ ] **Dia 2** — Silver/Gold (Notebooks) + Pipeline
 - [ ] **Dia 3** — Direct Lake + RLS/OLS
 - [ ] **Dia 4** — Capacidade/custos + camada de negócio
