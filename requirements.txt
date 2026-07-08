@@ -1,0 +1,3 @@
+# Preparação local dos dados (Dia 1). Transformações rodam no Spark do Fabric.
+kaggle>=1.6
+pandas>=2.0

@@ -1,0 +1,27 @@
+# Dados brutos — não versionar
+data/raw/
+*.zip
+*.csv
+!data/sample/*.csv
+
+# Power BI
+*.pbix.tmp
+*.pbip.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Credenciais
+.kaggle/
+kaggle.json
+*.env
+.env
+
+# SO / editor
+.DS_Store
+Thumbs.db
+.vscode/
