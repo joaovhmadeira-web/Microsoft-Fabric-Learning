@@ -1,4 +1,4 @@
-<h1 align="center">🚀 Migração Power BI Legado → Microsoft Fabric</h1>
+<h1 align="center">Migração Power BI Legado → Microsoft Fabric</h1>
 
 <p align="center">
   <em>Projeto end-to-end simulando uma migração enterprise de um ambiente Power BI (import mode) para o Microsoft Fabric — Lakehouse/OneLake, Direct Lake, Pipelines, Notebooks PySpark, RLS/OLS e FinOps.</em>
@@ -15,19 +15,19 @@
 
 ---
 
-## 📌 Sobre o projeto
+## Sobre o projeto
 
 Este repositório documenta, de ponta a ponta, um projeto de **migração de dados e BI** de um ambiente **Power BI tradicional (import mode)** para a plataforma **Microsoft Fabric**. O objetivo é demonstrar, em escala reduzida mas realista, as competências técnicas e de negócio exigidas em projetos de migração enterprise: engenharia de dados, modelagem semântica, governança, performance/custos e a tradução técnico → negócio.
 
-> 💡 O foco não é só "fazer funcionar", mas **documentar decisões de arquitetura, armadilhas reais e o comparativo antes/depois** — como num projeto de consultoria de verdade.
+> O foco não é só "fazer funcionar", mas **documentar decisões de arquitetura, armadilhas reais e o comparativo antes/depois** — como num projeto de consultoria de verdade.
 
-### 🗂️ Dataset
+### Dataset
 
 **[Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)** (público) — cenário real de marketplace: vendas, logística e pagamentos. Multi-tabela por natureza e com colunas sensíveis, perfeito para exercitar RLS/OLS. Escopo: 6 tabelas (`orders`, `order_items`, `order_payments`, `customers`, `sellers`, `products`).
 
 ---
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 Arquitetura **Medallion** (Bronze → Silver → Gold) sobre OneLake, com o modelo semântico em **Direct Lake**:
 
@@ -46,7 +46,7 @@ Arquitetura **Medallion** (Bronze → Silver → Gold) sobre OneLake, com o mode
                                                                             │   + RLS / OLS + DAX   │
                                                                             └───────────┬───────────┘
                                                                                         ▼
-                                                                                📊 Relatório Power BI
+                                                                                Relatório Power BI
 
            Orquestração: Data Pipeline (Bronze → Silver → Gold, agendado)
            Operação:     Fabric Capacity Metrics (consumo de CU, SKU F)
@@ -54,7 +54,7 @@ Arquitetura **Medallion** (Bronze → Silver → Gold) sobre OneLake, com o mode
 
 ### Comparativo: legado → Fabric
 
-| Camada | 🕐 Antes (legado) | ⚡ Depois (Fabric) |
+| Camada | Antes (legado) | Depois (Fabric) |
 |---|---|---|
 | **Ingestão** | CSVs manuais no PBI Desktop | Lakehouse **Bronze** (OneLake, Delta) |
 | **Transformação** | Power Query no `.pbix` | Notebooks **PySpark** (Silver/Gold) + Pipeline |
@@ -64,7 +64,7 @@ Arquitetura **Medallion** (Bronze → Silver → Gold) sobre OneLake, com o mode
 
 ---
 
-## 🛠️ Stack técnica
+## Stack técnica
 
 | Área | Ferramentas |
 |---|---|
@@ -77,18 +77,18 @@ Arquitetura **Medallion** (Bronze → Silver → Gold) sobre OneLake, com o mode
 
 ---
 
-## 🗺️ Roadmap (4 dias)
+## Roadmap (4 dias)
 
 | Dia | Foco | Entregável | Status |
 |---|---|---|:---:|
-| **1** | Baseline legado + Lakehouse Bronze | `.pbix` import mode + Bronze no `lh_olist` | ✅ |
-| **2** | Transformação Silver/Gold + Pipeline | Notebooks PySpark + Pipeline orquestrado | 🔜 |
-| **3** | Direct Lake + Segurança | Modelo Direct Lake com RLS/OLS testados | ⬜ |
-| **4** | Capacidade, custos & negócio | Capacity Metrics + plano de comunicação | ⬜ |
+| **1** | Baseline legado + Lakehouse Bronze | `.pbix` import mode + Bronze no `lh_olist` | Concluído |
+| **2** | Transformação Silver/Gold + Pipeline | Notebooks PySpark + Pipeline orquestrado | Concluído |
+| **3** | Direct Lake + Segurança | Modelo Direct Lake com RLS/OLS testados | Pendente |
+| **4** | Capacidade, custos & negócio | Capacity Metrics + plano de comunicação | Pendente |
 
 ---
 
-## 📁 Estrutura do repositório
+## Estrutura do repositório
 
 ```
 fabric-migration-olist/
@@ -114,16 +114,16 @@ fabric-migration-olist/
 
 ---
 
-## 💡 Destaques & aprendizados
+## Destaques & aprendizados
 
-- **🐛 Armadilha de qualidade de dados (locale decimal):** CSVs com `.` decimal + Power BI em pt-BR tipavam `price` como inteiro, inflando a receita em **×100** (R$ 1,36 bi vs. R$ 13,6 mi reais). Resolvido com `type number` + cultura `en-US` no `Table.TransformColumnTypes`. → [`pbi-legacy/README.md`](pbi-legacy/README.md)
-- **🔐 Nuance de grão no RLS:** `seller_state` vive no grão de item, não de pedido — um pedido com sellers de estados diferentes aparece para múltiplos vendedores. Comportamento esperado de marketplace, documentado. → [`docs/seguranca-rls-ols.md`](docs/seguranca-rls-ols.md)
-- **⚡ Direct Lake vs. Import:** mesma lógica DAX, mas sem cópia de dados nem refresh — leitura direta do Delta. → [`dax/medidas.md`](dax/medidas.md)
-- **💰 FinOps:** o divisor de águas de licenciamento é o **F64** (Power BI Pro grátis para consumidores). → [`docs/capacidade-custos.md`](docs/capacidade-custos.md)
+- **Armadilha de qualidade de dados (locale decimal):** CSVs com `.` decimal + Power BI em pt-BR tipavam `price` como inteiro, inflando a receita em **×100** (R$ 1,36 bi vs. R$ 13,6 mi reais). Resolvido com `type number` + cultura `en-US` no `Table.TransformColumnTypes`. → [`pbi-legacy/README.md`](pbi-legacy/README.md)
+- **Nuance de grão no RLS:** `seller_state` vive no grão de item, não de pedido — um pedido com sellers de estados diferentes aparece para múltiplos vendedores. Comportamento esperado de marketplace, documentado. → [`docs/seguranca-rls-ols.md`](docs/seguranca-rls-ols.md)
+- **Direct Lake vs. Import:** mesma lógica DAX, mas sem cópia de dados nem refresh — leitura direta do Delta. → [`dax/medidas.md`](dax/medidas.md)
+- **FinOps:** o divisor de águas de licenciamento é o **F64** (Power BI Pro grátis para consumidores). → [`docs/capacidade-custos.md`](docs/capacidade-custos.md)
 
 ---
 
-## ▶️ Como reproduzir
+## Como reproduzir
 
 ```bash
 # 1. Baixar e preparar os dados (não versionados)
@@ -140,7 +140,7 @@ Detalhes em [`data/README.md`](data/README.md) e [`docs/plano-projeto.md`](docs/
 
 ---
 
-## 📈 Métricas de negócio (DAX)
+## Métricas de negócio (DAX)
 
 Receita total / por período · Ticket médio · % frete sobre venda · SLA de entrega (prazo real vs. promessa). Baseline validado: **Receita ~R$ 13,6 mi**, **Ticket ~R$ 137**, **% Frete ~20%**.
 

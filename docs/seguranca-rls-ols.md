@@ -6,7 +6,7 @@ Documentação da segurança aplicada ao modelo semântico **Direct Lake** sobre
 
 **Cenário:** um vendedor só enxerga os pedidos que contêm itens vendidos por ele (eixo: estado/UF do seller).
 
-> ⚠️ **Nuance de modelagem (grão):** `seller_id` / `seller_state` vivem no grão de **item** (`fact_order_items`), não em `fact_orders`. O filtro em `dim_seller` precisa propagar `dim_seller → fact_order_items`. Como um pedido pode conter itens de sellers de estados diferentes, esse pedido apareceria para **mais de um vendedor** — comportamento esperado de marketplace. Consequência prática: uma medida como `Receita Total` (baseada em `fact_order_items[price]`) filtra corretamente por vendedor; já medidas no grão de pedido (ex.: `DISTINCTCOUNT(fact_orders[order_id])`) podem contar um pedido "compartilhado" para dois estados. Validar no teste "View as role" e documentar o número esperado.
+> **Nuance de modelagem (grão):** `seller_id` / `seller_state` vivem no grão de **item** (`fact_order_items`), não em `fact_orders`. O filtro em `dim_seller` precisa propagar `dim_seller → fact_order_items`. Como um pedido pode conter itens de sellers de estados diferentes, esse pedido apareceria para **mais de um vendedor** — comportamento esperado de marketplace. Consequência prática: uma medida como `Receita Total` (baseada em `fact_order_items[price]`) filtra corretamente por vendedor; já medidas no grão de pedido (ex.: `DISTINCTCOUNT(fact_orders[order_id])`) podem contar um pedido "compartilhado" para dois estados. Validar no teste "View as role" e documentar o número esperado.
 
 ### Papéis
 

@@ -15,7 +15,7 @@ Modelo Power BI Desktop tradicional (**import mode**) que representa o ambiente 
 3. Criar as medidas.
 4. Publicar no workspace do projeto.
 
-## ⚠️ Pegadinha de qualidade de dados — locale decimal
+## Pegadinha de qualidade de dados — locale decimal
 
 Os CSVs do Olist usam **ponto** como separador decimal (`58.90`). Com o Power BI em **português (Brasil)**, a etapa automática "Tipo Alterado" do Power Query lê o `.` como separador de **milhar** e tipa `price`/`freight_value` como `Int64.Type`, gerando valores **×100** (Receita Total dava ~R$ 1,36 **bilhão** em vez de ~R$ 13,6 milhões).
 
