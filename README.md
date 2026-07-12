@@ -88,6 +88,40 @@ Arquitetura **Medallion** (Bronze → Silver → Gold) sobre OneLake, com o mode
 
 ---
 
+## Execução no Fabric
+
+Registro visual da execução no portal (prints completos e indexados em [`prints/`](prints/)):
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="prints/homepage_workspace.png" alt="Workspace Fabric Learning" width="100%"><br>
+      <sub><b>Workspace</b> — "Fabric Learning" com os itens do projeto: Lakehouse, notebooks, pipeline e modelo semântico.</sub>
+    </td>
+    <td width="50%" valign="top">
+      <img src="prints/tabelas_brz_slv_gold.png" alt="Camadas Medallion no Lakehouse" width="100%"><br>
+      <sub><b>Medallion materializado</b> — camadas <code>brz_*</code>, <code>slv_*</code> e <code>gold_*</code> sob o schema <code>dbo</code> do Lakehouse <code>lh_olist</code>.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="prints/pipeline_execucao.png" alt="Execução do pipeline" width="100%"><br>
+      <sub><b>Pipeline</b> — <code>pl_olist_medallion</code> executado ponta a ponta (Bronze → Silver → Gold), atividades bem-sucedidas.</sub>
+    </td>
+    <td width="50%" valign="top">
+      <img src="prints/pipeline_agendamento.png" alt="Agendamento do pipeline" width="100%"><br>
+      <sub><b>Orquestração</b> — pipeline agendado para execução diária às 03:00.</sub>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="prints/capacity_metrics_trial_error.png" alt="Capacity Metrics falhando no trial" width="80%"><br>
+  <sub><b>Limitação de ambiente (FinOps)</b> — o Capacity Metrics App não conecta à capacity <em>trial</em> (<code>Error obtaining data location</code>); o consumo foi medido pelo <b>Monitoring Hub</b>. Ver <a href="docs/capacidade-custos.md">docs/capacidade-custos.md</a>.</sub>
+</p>
+
+---
+
 ## Estrutura do repositório
 
 ```
