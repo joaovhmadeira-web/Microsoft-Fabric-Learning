@@ -83,8 +83,8 @@ Arquitetura **Medallion** (Bronze → Silver → Gold) sobre OneLake, com o mode
 |---|---|---|:---:|
 | **1** | Baseline legado + Lakehouse Bronze | `.pbix` import mode + Bronze no `lh_olist` | Concluído |
 | **2** | Transformação Silver/Gold + Pipeline | Notebooks PySpark + Pipeline orquestrado | Concluído |
-| **3** | Direct Lake + Segurança | Modelo Direct Lake com RLS/OLS testados | Pendente |
-| **4** | Capacidade, custos & negócio | Capacity Metrics + plano de comunicação | Pendente |
+| **3** | Direct Lake + Segurança | Modelo Direct Lake com RLS/OLS testados | Concluído |
+| **4** | Capacidade, custos & negócio | Análise de CU/SKU + plano de comunicação | Concluído |
 
 ---
 
@@ -100,7 +100,8 @@ fabric-migration-olist/
 │   └── legacy_olist.pbix
 ├── notebooks/
 │   ├── bronze_to_silver.ipynb     # limpeza + tipagem (PySpark)
-│   └── silver_to_gold.ipynb       # modelagem dimensional (esquema estrela)
+│   ├── silver_to_gold.ipynb       # modelagem dimensional (esquema estrela)
+│   └── seguranca_como_codigo.py   # RLS + OLS via semantic-link-labs (security as code)
 ├── pipeline/                      # definição do Data Pipeline Fabric
 ├── docs/
 │   ├── plano-projeto.md           # plano completo do projeto
@@ -119,7 +120,9 @@ fabric-migration-olist/
 - **Armadilha de qualidade de dados (locale decimal):** CSVs com `.` decimal + Power BI em pt-BR tipavam `price` como inteiro, inflando a receita em **×100** (R$ 1,36 bi vs. R$ 13,6 mi reais). Resolvido com `type number` + cultura `en-US` no `Table.TransformColumnTypes`. → [`pbi-legacy/README.md`](pbi-legacy/README.md)
 - **Nuance de grão no RLS:** `seller_state` vive no grão de item, não de pedido — um pedido com sellers de estados diferentes aparece para múltiplos vendedores. Comportamento esperado de marketplace, documentado. → [`docs/seguranca-rls-ols.md`](docs/seguranca-rls-ols.md)
 - **Direct Lake vs. Import:** mesma lógica DAX, mas sem cópia de dados nem refresh — leitura direta do Delta. → [`dax/medidas.md`](dax/medidas.md)
-- **FinOps:** o divisor de águas de licenciamento é o **F64** (Power BI Pro grátis para consumidores). → [`docs/capacidade-custos.md`](docs/capacidade-custos.md)
+- **Segurança como código:** o Tabular Editor 2 (grátis) falha ao salvar OLS em Direct Lake, então RLS + OLS foram aplicados por **`semantic-link-labs`** num notebook — versionável e reproduzível. → [`notebooks/seguranca_como_codigo.py`](notebooks/seguranca_como_codigo.py)
+- **Restrições de ambiente contornadas (como numa migração real):** Git nativo do Fabric bloqueado pelo tenant → versionamento manual no GitHub; "Test as role" incompatível com SSO em Direct Lake → RLS/OLS validados por **XMLA/DAX Studio** com `EffectiveUserName`; Capacity Metrics App não suporta capacity trial → consumo medido pelo **Monitoring Hub**. → [`docs/seguranca-rls-ols.md`](docs/seguranca-rls-ols.md)
+- **FinOps:** carga medida real (pipeline ~4m24s) mostrou que o custo é dirigido por **overhead de sessão Spark**, não por volume de dados — SKU se dimensiona pela **camada de consumo/licenciamento** (**F64** = Power BI Pro grátis para consumidores), não pela transformação. → [`docs/capacidade-custos.md`](docs/capacidade-custos.md)
 
 ---
 

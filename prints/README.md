@@ -15,15 +15,17 @@ Registro visual da execução no portal Fabric, para o relatório/portfólio.
 | `pipeline_execucao.png` | Pipeline `pl_olist_medallion` — execução com atividades verdes | Orquestração (run) |
 | `pipeline_agendamento.png` | Pipeline `pl_olist_medallion` — agendamento diário 03:00 | Orquestração (schedule) |
 
-## Pendentes — Dia 3 (Direct Lake + Segurança)
+## Capturados — Dia 4
 
-- [ ] Modelo semântico Direct Lake sobre a Gold (diagrama estrela)
-- [ ] Medidas DAX recriadas no modelo Direct Lake (paridade com o baseline do Dia 1)
-- [ ] Regra RLS (vendedor × estado)
-- [ ] Regra OLS (esconder `payment_value` do papel operacional)
-- [ ] "View as role" mostrando o filtro aplicado
+| Arquivo | O que mostra | Etapa |
+|---|---|---|
+| `capacity_metrics_trial_error.png` | Capacity Metrics App falhando na capacity trial (`Error obtaining data location`) | Limitação de ambiente (FinOps) |
 
-## Pendentes — Dia 4 (Capacidade, custos e negócio)
+## Opcionais — Dia 3/4 (execução validada por outros meios)
 
-- [ ] Fabric Capacity Metrics após reprocessar o pipeline (consumo de CU)
-- [ ] Comparativo antes/depois (legado vs. Fabric)
+O Dia 3 foi validado no **DAX Studio** (impersonação XMLA) e o Dia 4 pelo **Monitoring Hub** — prints abaixo são bônus, não bloqueiam a entrega:
+
+- [ ] Diagrama estrela do modelo Direct Lake
+- [ ] DAX Studio: RLS `Vendedor_SP`/`Vendedor_Dinamico` retornando só SP
+- [ ] DAX Studio: OLS quebrando `[Total Pagamentos]` no papel `Operacional`
+- [ ] Monitoring Hub: durações do reprocessamento do pipeline (~4m24s)
